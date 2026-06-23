@@ -24,7 +24,7 @@ ShopyVibe is a modern, dynamic e-commerce platform that allows users to easily b
 
 ## Getting Started Locally
 
-First, ensure you have Node.js 18+ and a local MySQL database running.
+First, ensure you have Node.js 22+ and a local MySQL database running.
 
 1. **Install dependencies:**
    ```bash
