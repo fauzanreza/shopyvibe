@@ -21,7 +21,10 @@ export default function LoginPage() {
           </p>
         </div>
         
-        <form className="mt-8 space-y-6" action={login}>
+        <form className="mt-8 space-y-6" action={async (formData) => {
+          "use server"
+          await login(formData)
+        }}>
           <div className="space-y-4 rounded-md shadow-sm">
             <div>
               <label htmlFor="email" className="sr-only">Email address</label>
@@ -70,7 +73,10 @@ export default function LoginPage() {
           </div>
 
           <div className="mt-6">
-            <form action={loginWithGoogle}>
+            <form action={async () => {
+              "use server"
+              await loginWithGoogle()
+            }}>
               <button
                 type="submit"
                 className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors"

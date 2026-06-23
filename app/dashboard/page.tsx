@@ -6,6 +6,7 @@ import Link from "next/link"
 import { SignOutButton } from "@/components/auth/signout-button"
 import { QrCodeIcon, CubeIcon, EyeIcon, ArrowTopRightOnSquareIcon, FunnelIcon } from "@heroicons/react/24/outline"
 import { StoreFilter } from "@/components/store-filter"
+import { Product } from "@prisma/client"
 
 export default async function GlobalDashboardPage({
   searchParams,
@@ -47,7 +48,7 @@ export default async function GlobalDashboardPage({
   let totalProducts = 0
   let linkClicks = 0
   let qrScans = 0
-  let allRecentProducts: any[] = []
+  let allRecentProducts: Product[] = []
 
   storesData.forEach(store => {
     totalVisits += store._count.analytics

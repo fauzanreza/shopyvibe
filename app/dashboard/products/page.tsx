@@ -24,7 +24,10 @@ export default async function ProductsDashboard() {
 
       <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
         <h3 className="text-lg font-bold text-slate-800 mb-4">Tambah Produk Baru</h3>
-        <form action={createProduct} className="space-y-4 max-w-lg">
+        <form action={async (formData) => {
+          "use server"
+          await createProduct(formData)
+        }} className="space-y-4 max-w-lg">
           <div>
             <label className="block text-sm font-medium text-slate-700">Nama Produk</label>
             <input type="text" name="name" required className="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border" />
