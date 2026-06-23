@@ -1,0 +1,12 @@
+
+export type Product = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  imageUrl: string;
+  featured: boolean;
+  inStock: boolean;
+  details: string[];
+};
