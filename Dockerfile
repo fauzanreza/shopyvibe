@@ -17,6 +17,8 @@ RUN npx prisma generate
 
 # Build Next.js
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV DATABASE_URL="mysql://dummy:dummy@localhost:3306/dummy"
+ENV AUTH_SECRET="dummy-secret-for-build-only"
 RUN npm run build
 
 # Production image
