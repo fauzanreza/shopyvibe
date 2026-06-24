@@ -12,13 +12,15 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Set dummy env vars early for Prisma and Next build
+ENV NEXT_TELEMETRY_DISABLED 1
+ENV DATABASE_URL="mysql://dummy:dummy@localhost:3306/dummy"
+ENV AUTH_SECRET="dummy-secret-for-build-only"
+
 # Generate Prisma client
 RUN npx prisma generate
 
 # Build Next.js
-ENV NEXT_TELEMETRY_DISABLED 1
-ENV DATABASE_URL="mysql://dummy:dummy@localhost:3306/dummy"
-ENV AUTH_SECRET="dummy-secret-for-build-only"
 RUN npm run build
 
 # Production image
