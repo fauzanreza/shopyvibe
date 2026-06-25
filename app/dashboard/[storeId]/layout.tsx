@@ -3,7 +3,10 @@ import { redirect, notFound } from "next/navigation"
 import { db } from "@/lib/db"
 import Image from "next/image"
 import Link from "next/link"
-import { HomeIcon, CubeIcon, QrCodeIcon, Cog6ToothIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
+import { 
+  HomeIcon, CubeIcon, QrCodeIcon, Cog6ToothIcon, ChevronLeftIcon, 
+  ChartBarIcon, ShoppingBagIcon, UsersIcon, TagIcon, PaintBrushIcon, PuzzlePieceIcon 
+} from "@heroicons/react/24/outline"
 import { SignOutButton } from "@/components/auth/signout-button"
 
 export default async function StoreDashboardLayout({
@@ -28,11 +31,37 @@ export default async function StoreDashboardLayout({
   const userInitials = userName.split(" ").map((n: string) => n[0]).join("").substring(0, 2).toUpperCase()
   const userImage = session.user.image
 
-  const navLinks = [
-    { href: `/dashboard/${storeId}`, label: "Overview", icon: HomeIcon },
-    { href: `/dashboard/${storeId}/products`, label: "Katalog Produk", icon: CubeIcon },
-    { href: `/dashboard/${storeId}/qr`, label: "QR Engine (O2O)", icon: QrCodeIcon },
-    { href: `/dashboard/${storeId}/settings`, label: "Store Settings", icon: Cog6ToothIcon },
+  const navGroups = [
+    {
+      title: "Main",
+      links: [
+        { href: `/dashboard/${storeId}`, label: "Overview", icon: HomeIcon },
+        { href: `/dashboard/${storeId}/analytics`, label: "Analitik", icon: ChartBarIcon },
+      ]
+    },
+    {
+      title: "Sales & Catalog",
+      links: [
+        { href: `/dashboard/${storeId}/orders`, label: "Pesanan", icon: ShoppingBagIcon },
+        { href: `/dashboard/${storeId}/products`, label: "Katalog Produk", icon: CubeIcon },
+        { href: `/dashboard/${storeId}/customers`, label: "Pelanggan", icon: UsersIcon },
+      ]
+    },
+    {
+      title: "Marketing",
+      links: [
+        { href: `/dashboard/${storeId}/discounts`, label: "Diskon & Promo", icon: TagIcon },
+        { href: `/dashboard/${storeId}/qr`, label: "QR Engine (O2O)", icon: QrCodeIcon },
+      ]
+    },
+    {
+      title: "Storefront & System",
+      links: [
+        { href: `/dashboard/${storeId}/design`, label: "Desain Tema", icon: PaintBrushIcon },
+        { href: `/dashboard/${storeId}/integrations`, label: "Integrasi", icon: PuzzlePieceIcon },
+        { href: `/dashboard/${storeId}/settings`, label: "Store Settings", icon: Cog6ToothIcon },
+      ]
+    }
   ]
 
   return (
@@ -65,16 +94,23 @@ export default async function StoreDashboardLayout({
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          {navLinks.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 hover:text-indigo-700 rounded-lg font-medium transition-colors text-sm"
-            >
-              <Icon className="w-5 h-5 flex-shrink-0" />
-              {label}
-            </Link>
+        <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
+          {navGroups.map((group) => (
+            <div key={group.title}>
+              <h3 className="px-3 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{group.title}</h3>
+              <div className="space-y-1">
+                {group.links.map(({ href, label, icon: Icon }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-50 hover:text-indigo-700 rounded-lg font-medium transition-colors text-sm"
+                  >
+                    <Icon className="w-5 h-5 flex-shrink-0" />
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
 

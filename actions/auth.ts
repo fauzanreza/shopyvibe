@@ -33,7 +33,7 @@ export async function register(formData: FormData) {
     }
   })
 
-  return { success: "User registered" }
+  return { success: "Account created successfully" }
 }
 
 export async function login(formData: FormData) {

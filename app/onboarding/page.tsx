@@ -57,6 +57,56 @@ const LAYOUT_TEMPLATES = [
     ],
     bgHex: "#fff0f6", btnHex: "#e7609e", textHex: "#5a1a36",
   },
+  {
+    id: "PORTFOLIO",
+    name: "Creative Portfolio",
+    blocks: [
+      { id: 1, type: "hero", text: "Showcase Your Work" },
+      { id: 2, type: "gallery", text: "Project Gallery" },
+      { id: 3, type: "bio", text: "About Me" },
+    ],
+    bgHex: "#18181b", btnHex: "#a855f7", textHex: "#f4f4f5",
+  },
+  {
+    id: "EVENT",
+    name: "Event / Webinar",
+    blocks: [
+      { id: 1, type: "headline", text: "Event Title" },
+      { id: 2, type: "details", text: "Date & Location" },
+      { id: 3, type: "link", text: "Register Now" },
+    ],
+    bgHex: "#fdf4ff", btnHex: "#d946ef", textHex: "#4a044e",
+  },
+  {
+    id: "RESTAURANT",
+    name: "Digital Menu",
+    blocks: [
+      { id: 1, type: "hero", text: "Restaurant Name" },
+      { id: 2, type: "menu", text: "Food Categories" },
+      { id: 3, type: "product-grid", text: "Featured Dishes" },
+    ],
+    bgHex: "#fffbeb", btnHex: "#d97706", textHex: "#78350f",
+  },
+  {
+    id: "NONPROFIT",
+    name: "Fundraising",
+    blocks: [
+      { id: 1, type: "hero", text: "Campaign Mission" },
+      { id: 2, type: "progress", text: "Donation Goal" },
+      { id: 3, type: "link", text: "Donate Here" },
+    ],
+    bgHex: "#f0fdf4", btnHex: "#16a34a", textHex: "#14532d",
+  },
+  {
+    id: "REALESTATE",
+    name: "Real Estate",
+    blocks: [
+      { id: 1, type: "hero", text: "Featured Property" },
+      { id: 2, type: "gallery", text: "Property Photos" },
+      { id: 3, type: "details", text: "Specifications" },
+    ],
+    bgHex: "#f8fafc", btnHex: "#334155", textHex: "#0f172a",
+  }
 ];
 
 export default function VibeBuilderPage() {

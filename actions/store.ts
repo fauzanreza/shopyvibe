@@ -48,6 +48,8 @@ export async function updateStoreTheme(formData: FormData) {
   }
 
   const themeConfig = formData.get("themeConfig") as string
+  const layoutMode = formData.get("layoutMode") as any
+  const logo = formData.get("logo") as string
 
   try {
     const store = await db.store.findUnique({
@@ -58,15 +60,20 @@ export async function updateStoreTheme(formData: FormData) {
       return { error: "Store not found" }
     }
 
+    const dataToUpdate: any = {}
+    if (themeConfig) dataToUpdate.themeConfig = themeConfig;
+    if (layoutMode && layoutMode !== "CUSTOM") dataToUpdate.layoutMode = layoutMode;
+    if (logo) dataToUpdate.logo = logo;
+
     await db.store.update({
       where: { id: store.id },
-      data: { themeConfig }
+      data: dataToUpdate
     })
 
-    revalidatePath("/dashboard")
-    revalidatePath(`/${store.slug}`)
+    revalidatePath("/", "layout")
     return { success: "Theme updated" }
   } catch (error) {
+    console.error("updateStoreTheme ERROR:", error);
     return { error: "Failed to update theme" }
   }
 }

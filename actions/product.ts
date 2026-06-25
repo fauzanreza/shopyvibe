@@ -42,7 +42,7 @@ export async function createProduct(formData: FormData) {
       }
     })
 
-    revalidatePath("/dashboard/products")
+    revalidatePath(`/dashboard/${store.id}/products`)
     revalidatePath(`/${store.slug}`)
     return { success: "Product created" }
   } catch (error) {
@@ -72,7 +72,7 @@ export async function deleteProduct(productId: string) {
       }
     })
 
-    revalidatePath("/dashboard/products")
+    revalidatePath(`/dashboard/${store.id}/products`)
     revalidatePath(`/${store.slug}`)
     return { success: "Product deleted" }
   } catch (error) {

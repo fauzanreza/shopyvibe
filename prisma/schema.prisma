@@ -65,6 +65,11 @@ enum LayoutMode {
   SERVICE
   CAMPAIGN
   BIO
+  PORTFOLIO
+  EVENT
+  RESTAURANT
+  NONPROFIT
+  REALESTATE
 }
 
 model Store {

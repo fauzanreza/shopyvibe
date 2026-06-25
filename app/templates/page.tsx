@@ -6,12 +6,15 @@ import { SignOutButton } from "@/components/auth/signout-button"
 import { SparklesIcon } from "@heroicons/react/24/outline"
 
 const TEMPLATES = [
-  { id: "minimalist", name: "Clean & Minimal", desc: "Simple, elegant, timeless", bg: "bg-slate-100", color: "text-slate-600" },
-  { id: "neon", name: "Cyber Neon", desc: "Bold, dark, electric", bg: "bg-slate-900", color: "text-emerald-400" },
-  { id: "pastel", name: "Sweet Pastel", desc: "Soft, warm, friendly", bg: "bg-pink-100", color: "text-pink-600" },
-  { id: "earth", name: "Earth Tones", desc: "Natural, warm, organic", bg: "bg-amber-100", color: "text-amber-800" },
-  { id: "ocean", name: "Ocean Breeze", desc: "Cool, calm, refreshing", bg: "bg-sky-100", color: "text-sky-600" },
-  { id: "luxury", name: "Luxury Black", desc: "Premium, exclusive", bg: "bg-stone-900", color: "text-stone-100" },
+  { id: "ECOMMERCE", name: "F&B / E-Commerce", desc: "Katalog produk & transaksi", bg: "bg-indigo-50", color: "text-indigo-600" },
+  { id: "SERVICE", name: "Services & Booking", desc: "Jasa & pemesanan jadwal", bg: "bg-cyan-50", color: "text-cyan-600" },
+  { id: "CAMPAIGN", name: "Flash Sale", desc: "Promosi waktu terbatas", bg: "bg-slate-900", color: "text-rose-500" },
+  { id: "BIO", name: "Link-in-Bio", desc: "Profil & tautan sosial", bg: "bg-pink-50", color: "text-pink-600" },
+  { id: "PORTFOLIO", name: "Creative Portfolio", desc: "Showcase karya & portofolio", bg: "bg-purple-50", color: "text-purple-600" },
+  { id: "EVENT", name: "Event / Webinar", desc: "Pendaftaran acara", bg: "bg-fuchsia-50", color: "text-fuchsia-600" },
+  { id: "RESTAURANT", name: "Digital Menu", desc: "Katalog menu restoran", bg: "bg-amber-50", color: "text-amber-600" },
+  { id: "NONPROFIT", name: "Fundraising", desc: "Donasi & kampanye", bg: "bg-green-50", color: "text-green-600" },
+  { id: "REALESTATE", name: "Real Estate", desc: "Listing properti & rumah", bg: "bg-slate-100", color: "text-slate-600" },
 ]
 
 export default async function TemplatesPage() {

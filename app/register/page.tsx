@@ -1,86 +1,145 @@
+"use client"
+
+import { useState } from "react"
 import { register, loginWithGoogle } from "@/actions/auth"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function RegisterPage() {
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setError("")
+    setSuccess("")
+    
+    const formData = new FormData(e.currentTarget)
+    const password = formData.get("password") as string
+    const confirmPassword = formData.get("confirmPassword") as string
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!")
+      return
+    }
+
+    setLoading(true)
+    const res = await register(formData)
+    setLoading(false)
+
+    if (res?.error) {
+      setError(res.error)
+    } else if (res?.success) {
+      setSuccess("Account created successfully! Redirecting to login...")
+      setTimeout(() => {
+        router.push("/login")
+      }, 2000)
+    }
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+    <div className="flex min-h-screen items-center justify-center bg-[#f8f9fa] px-4 py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100">
         <div>
-          <div className="flex flex-col items-center gap-3 mb-6">
-            <Image src="/logo.png" alt="ShopyVibe" width={56} height={56} className="rounded-2xl shadow-md" />
-            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-              Create your account
+          <div className="flex flex-col items-center gap-4 mb-6">
+            <Image src="/logo.png" alt="ShopyVibe" width={64} height={64} className="rounded-2xl shadow-md" />
+            <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">
+              Create an account
             </h2>
           </div>
-          <p className="text-center text-sm text-gray-600">
-            Or{" "}
-            <Link href="/login" className="font-medium text-blue-600 hover:text-blue-500 transition-colors">
-              sign in to your existing account
+          <p className="text-center text-sm text-slate-500 font-medium">
+            Already have an account?{" "}
+            <Link href="/login" className="font-bold text-indigo-600 hover:text-indigo-500 transition-colors">
+              Sign in here
             </Link>
           </p>
         </div>
         
-        <form className="mt-8 space-y-6" action={async (formData) => {
-          "use server"
-          await register(formData)
-        }}>
-          <div className="space-y-4 rounded-md shadow-sm">
+        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+          
+          {error && (
+            <div className="bg-red-50 text-red-600 text-sm font-semibold p-3 rounded-xl border border-red-100 text-center">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="bg-emerald-50 text-emerald-600 text-sm font-semibold p-3 rounded-xl border border-emerald-100 text-center">
+              {success}
+            </div>
+          )}
+
+          <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="sr-only">Full name</label>
+              <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-1.5">Full Name</label>
               <input
                 id="name"
                 name="name"
                 type="text"
                 autoComplete="name"
                 required
-                className="relative block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                placeholder="Full name"
+                className="block w-full rounded-xl border-0 py-3 px-4 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-shadow"
+                placeholder="John Doe"
               />
             </div>
             <div>
-              <label htmlFor="email" className="sr-only">Email address</label>
+              <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-1.5">Email Address</label>
               <input
                 id="email"
                 name="email"
                 type="email"
                 autoComplete="email"
                 required
-                className="relative block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                placeholder="Email address"
+                className="block w-full rounded-xl border-0 py-3 px-4 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-shadow"
+                placeholder="you@example.com"
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">Password</label>
+              <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
               <input
                 id="password"
                 name="password"
                 type="password"
                 autoComplete="new-password"
                 required
-                className="relative block w-full rounded-md border-0 py-2.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-                placeholder="Password"
+                className="block w-full rounded-xl border-0 py-3 px-4 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-shadow"
+                placeholder="••••••••"
+              />
+            </div>
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-semibold text-slate-700 mb-1.5">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                autoComplete="new-password"
+                required
+                className="block w-full rounded-xl border-0 py-3 px-4 text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 transition-shadow"
+                placeholder="••••••••"
               />
             </div>
           </div>
 
-          <div>
+          <div className="pt-2">
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-md bg-blue-600 px-3 py-2.5 text-sm font-semibold text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-colors"
+              disabled={loading}
+              className="flex w-full justify-center rounded-xl bg-indigo-600 px-3 py-3 text-sm font-bold text-white hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors disabled:opacity-50"
             >
-              Sign up
+              {loading ? "Creating account..." : "Create Account"}
             </button>
           </div>
         </form>
 
-        <div className="mt-6">
+        <div className="mt-8">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
+              <div className="w-full border-t border-slate-200" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">Or continue with</span>
+              <span className="bg-white px-4 text-slate-500 font-medium">Or continue with</span>
             </div>
           </div>
 
@@ -91,7 +150,7 @@ export default function RegisterPage() {
             }}>
               <button
                 type="submit"
-                className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors"
+                className="flex w-full items-center justify-center gap-3 rounded-xl bg-white px-3 py-3 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-inset ring-slate-200 hover:bg-slate-50 transition-colors"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24">
                   <path
