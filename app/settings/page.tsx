@@ -74,12 +74,12 @@ export default async function SettingsPage() {
           
           <div className="p-8">
              <h3 className="text-lg font-bold text-slate-800 mb-4">Billing & Plan</h3>
-             <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-6 flex justify-between items-center">
+             <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
                    <p className="font-bold text-indigo-900">Free Plan</p>
                    <p className="text-sm text-indigo-700 mt-1">Upgrade to Pro to remove ShopyVibe branding and unlock custom domains.</p>
                 </div>
-                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors">
+                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg font-semibold transition-colors w-full sm:w-auto">
                    Upgrade to Pro
                 </button>
              </div>

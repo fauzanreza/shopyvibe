@@ -14,9 +14,9 @@ export default function ShopyVibeLandingPage() {
               <Image src="/logo.png" alt="ShopyVibe Logo" width={32} height={32} className="rounded-lg" />
               <span className="font-bold text-2xl tracking-tight text-slate-900">ShopyVibe</span>
             </div>
-            <div className="flex items-center gap-4">
-              <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Log in</Link>
-              <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-6 shadow-md shadow-indigo-200">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">Log in</Link>
+              <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-4 sm:px-6 shadow-md shadow-indigo-200 text-sm">
                 <Link href="/dashboard">Get Started Free</Link>
               </Button>
             </div>
@@ -40,38 +40,38 @@ export default function ShopyVibeLandingPage() {
               </span>
               Platform Web-Builder Khusus UMKM
             </div>
-            <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-tight">
-              Bangun Identitas Digital <br/>
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 sm:mb-8 leading-tight">
+              Bangun Identitas Digital <br className="hidden sm:block" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-pink-500">
                 Yang Profesional & Intim
               </span>
             </h1>
-            <p className="text-lg lg:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-slate-600 mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
               Tinggalkan marketplace yang berisik. Buat profil bisnismu sendiri dengan Dynamic Builder, Link-in-Bio estetik, dan AI Sales Agent tanpa ribet.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button asChild size="lg" className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-8 py-6 text-lg w-full sm:w-auto min-w-[200px]">
+              <Button asChild size="lg" className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-5 sm:px-8 sm:py-6 text-base sm:text-lg w-full sm:w-auto min-w-[200px]">
                 <Link href="/dashboard">
                   Buat Toko Sekarang <ArrowRightIcon className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full px-8 py-6 text-lg w-full sm:w-auto min-w-[200px] border-slate-300 text-slate-700 hover:bg-slate-50">
+              <Button asChild variant="outline" size="lg" className="rounded-full px-6 py-5 sm:px-8 sm:py-6 text-base sm:text-lg w-full sm:w-auto min-w-[200px] border-slate-300 text-slate-700 hover:bg-slate-50">
                 <Link href="#features">Pelajari Fitur</Link>
               </Button>
             </div>
           </div>
 
           {/* Hero Image Mockup (Conceptual) */}
-          <div className="mt-20 flex justify-center relative z-10">
-            <div className="w-full max-w-5xl h-[400px] lg:h-[600px] rounded-2xl bg-gradient-to-tr from-slate-800 to-slate-900 shadow-2xl p-4 lg:p-8 flex items-center justify-center border border-slate-700/50 relative overflow-hidden group">
+          <div className="mt-12 sm:mt-20 flex justify-center relative z-10">
+            <div className="w-full max-w-5xl h-[350px] sm:h-[400px] lg:h-[600px] rounded-2xl bg-gradient-to-tr from-slate-800 to-slate-900 shadow-2xl p-4 lg:p-8 flex items-center justify-center border border-slate-700/50 relative overflow-hidden group">
               
               {/* Mockup UI Elements Grid */}
               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
               <div className="absolute inset-0 flex items-center justify-center">
                   <div className="flex gap-8 items-end transform transition-transform group-hover:scale-105 duration-700">
                     {/* Mobile Mockup */}
-                    <div className="w-56 lg:w-72 h-[450px] lg:h-[550px] bg-white rounded-[2.5rem] p-2 shadow-2xl border-[6px] border-slate-800 relative translate-y-8 z-20">
-                      <div className="absolute top-0 inset-x-0 h-6 bg-slate-800 rounded-b-3xl w-24 mx-auto"></div>
+                    <div className="w-48 sm:w-56 lg:w-72 h-[380px] sm:h-[450px] lg:h-[550px] bg-white rounded-[2rem] sm:rounded-[2.5rem] p-2 shadow-2xl border-[4px] sm:border-[6px] border-slate-800 relative translate-y-4 sm:translate-y-8 z-20">
+                      <div className="absolute top-0 inset-x-0 h-4 sm:h-6 bg-slate-800 rounded-b-xl sm:rounded-b-3xl w-16 sm:w-24 mx-auto"></div>
                       <div className="w-full h-full bg-slate-50 rounded-[2rem] overflow-hidden flex flex-col pt-8">
                          <div className="w-20 h-20 bg-indigo-100 rounded-full mx-auto mt-4 border-4 border-white shadow-sm"></div>
                          <h3 className="text-center font-bold mt-2">Toko Kopi Sejahtera</h3>
