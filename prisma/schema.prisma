@@ -60,6 +60,13 @@ model VerificationToken {
 
 // ShopyVibe Models
 
+enum LayoutMode {
+  ECOMMERCE
+  SERVICE
+  CAMPAIGN
+  BIO
+}
+
 model Store {
   id           String      @id @default(cuid())
   userId       String      @unique
@@ -67,6 +74,7 @@ model Store {
   name         String
   slug         String      @unique
   logo         String?
+  layoutMode   LayoutMode  @default(BIO)
   themeConfig  String?     @db.Text
   navbarConfig String?     @db.Text
   createdAt    DateTime    @default(now())

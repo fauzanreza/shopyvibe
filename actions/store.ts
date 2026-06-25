@@ -70,3 +70,67 @@ export async function updateStoreTheme(formData: FormData) {
     return { error: "Failed to update theme" }
   }
 }
+
+export async function publishVibe(data: {
+  name: string
+  slug: string
+  layoutMode: "ECOMMERCE" | "SERVICE" | "CAMPAIGN" | "BIO"
+  themeConfig: string
+}) {
+  const session = await auth()
+  if (!session?.user?.id) {
+    return { error: "Unauthorized" }
+  }
+
+  const { name, slug, layoutMode, themeConfig } = data
+
+  if (!name || !slug) {
+    return { error: "Missing name or slug" }
+  }
+
+  try {
+    // Check if store already exists for user
+    const existingStore = await db.store.findUnique({
+      where: { userId: session.user.id }
+    })
+
+    if (existingStore) {
+      // If updating, check if new slug is taken by someone else
+      if (existingStore.slug !== slug) {
+        const slugTaken = await db.store.findUnique({ where: { slug } })
+        if (slugTaken) return { error: "Slug already taken" }
+      }
+
+      await db.store.update({
+        where: { id: existingStore.id },
+        data: {
+          name,
+          slug,
+          layoutMode,
+          themeConfig
+        }
+      })
+    } else {
+      // Create new store
+      const slugTaken = await db.store.findUnique({ where: { slug } })
+      if (slugTaken) return { error: "Slug already taken" }
+
+      await db.store.create({
+        data: {
+          userId: session.user.id,
+          name,
+          slug,
+          layoutMode,
+          themeConfig
+        }
+      })
+    }
+
+    revalidatePath("/dashboard")
+    revalidatePath(`/${slug}`)
+    return { success: "Vibe published successfully" }
+  } catch (error) {
+    console.error("publishVibe error:", error)
+    return { error: "Failed to publish vibe" }
+  }
+}

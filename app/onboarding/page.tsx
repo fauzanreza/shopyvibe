@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { publishVibe } from "@/actions/store";
 import {
   ArrowRightIcon, SparklesIcon, PaintBrushIcon,
   PlusIcon, CheckIcon, Bars3BottomLeftIcon, PhotoIcon,
@@ -10,80 +12,98 @@ import {
   ChevronLeftIcon,
 } from "@heroicons/react/24/outline";
 
-/* ── Palette map per template ── */
-const TEMPLATES = [
+/* ── Layout Templates ── */
+const LAYOUT_TEMPLATES = [
   {
-    id: "minimalist",
-    name: "Clean & Minimal",
-    bgHex: "#fafaf9",
-    btnHex: "#1a1714",
-    textHex: "#1a1714",
-    preview: { bg: "bg-stone-50", btn: "bg-stone-900" },
+    id: "ECOMMERCE",
+    name: "F&B / E-Commerce",
+    blocks: [
+      { id: 1, type: "hero", text: "Store Banner" },
+      { id: 2, type: "categories", text: "Filter Kategori" },
+      { id: 3, type: "product-grid", text: "Produk Unggulan" },
+    ],
+    bgHex: "#fafaf9", btnHex: "#1a1714", textHex: "#1a1714",
   },
   {
-    id: "neon",
-    name: "Cyber Neon",
-    bgHex: "#0f0f1a",
-    btnHex: "#22d3a8",
-    textHex: "#ffffff",
-    preview: { bg: "bg-[#0f0f1a]", btn: "bg-emerald-400" },
+    id: "SERVICE",
+    name: "Services & Booking",
+    blocks: [
+      { id: 1, type: "profile", text: "Profil Profesional" },
+      { id: 2, type: "portfolio", text: "Galeri Karya" },
+      { id: 3, type: "pricing", text: "Paket Layanan" },
+      { id: 4, type: "testimonials", text: "Testimoni Klien" },
+    ],
+    bgHex: "#f0f8ff", btnHex: "#0ea5e9", textHex: "#0c3047",
   },
   {
-    id: "pastel",
-    name: "Sweet Pastel",
-    bgHex: "#fff0f6",
-    btnHex: "#e7609e",
-    textHex: "#5a1a36",
-    preview: { bg: "bg-pink-50", btn: "bg-pink-400" },
+    id: "CAMPAIGN",
+    name: "Flash Sale",
+    blocks: [
+      { id: 1, type: "headline", text: "DISKON BESAR!" },
+      { id: 2, type: "countdown", text: "Berakhir dalam: 02:15:00" },
+      { id: 3, type: "product-flash", text: "Produk Flash Sale" },
+    ],
+    bgHex: "#0f0f1a", btnHex: "#e11d48", textHex: "#ffffff",
   },
   {
-    id: "earth",
-    name: "Earth & Warm",
-    bgHex: "#f5ede3",
-    btnHex: "#7c4a2d",
-    textHex: "#3d2010",
-    preview: { bg: "bg-amber-50", btn: "bg-amber-800" },
-  },
-  {
-    id: "midnight",
-    name: "Midnight",
-    bgHex: "#0d1117",
-    btnHex: "#6550f5",
-    textHex: "#e8eaf0",
-    preview: { bg: "bg-[#0d1117]", btn: "bg-violet-600" },
-  },
-  {
-    id: "ocean",
-    name: "Ocean Breeze",
-    bgHex: "#f0f8ff",
-    btnHex: "#0ea5e9",
-    textHex: "#0c3047",
-    preview: { bg: "bg-sky-50", btn: "bg-sky-500" },
+    id: "BIO",
+    name: "Link-in-Bio",
+    blocks: [
+      { id: 1, type: "avatar", text: "@username" },
+      { id: 2, type: "bio", text: "Deskripsi singkat tentang saya." },
+      { id: 3, type: "link", text: "Tautan Penting 1" },
+      { id: 4, type: "link", text: "Tautan Penting 2" },
+    ],
+    bgHex: "#fff0f6", btnHex: "#e7609e", textHex: "#5a1a36",
   },
 ];
 
 export default function VibeBuilderPage() {
-  const [activeTab, setActiveTab] = useState<"templates" | "custom">("templates");
-  const [selectedId, setSelectedId] = useState("minimalist");
+  const [activeTab, setActiveTab] = useState<"layouts" | "custom">("layouts");
+  const [selectedId, setSelectedId] = useState("ECOMMERCE");
   const [previewMode, setPreviewMode] = useState<"both" | "desktop" | "mobile">("both");
 
-  // Grab current template palette
-  const currentTpl = TEMPLATES.find(t => t.id === selectedId) ?? TEMPLATES[0];
+  // Publish Modal State
+  const [showPublishModal, setShowPublishModal] = useState(false);
+  const [storeName, setStoreName] = useState("");
+  const [storeSlug, setStoreSlug] = useState("");
+  const [isPublishing, setIsPublishing] = useState(false);
+  const router = useRouter();
+
+  // Grab current layout
+  const currentTpl = LAYOUT_TEMPLATES.find(t => t.id === selectedId) ?? LAYOUT_TEMPLATES[0];
   const [bgColor, setBgColor] = useState(currentTpl.bgHex);
   const [btnColor, setBtnColor] = useState(currentTpl.btnHex);
   const [textColor, setTextColor] = useState(currentTpl.textHex);
+  const [blocks, setBlocks] = useState(currentTpl.blocks);
 
-  const [blocks, setBlocks] = useState([
-    { id: 1, type: "header", text: "@myawesomevibe" },
-    { id: 2, type: "link", text: "🛍 Katalog Produk" },
-    { id: 3, type: "link", text: "💬 WhatsApp Kami" },
-  ]);
-
-  const selectTemplate = (tpl: typeof TEMPLATES[0]) => {
+  const selectLayout = (tpl: typeof LAYOUT_TEMPLATES[0]) => {
     setSelectedId(tpl.id);
     setBgColor(tpl.bgHex);
     setBtnColor(tpl.btnHex);
     setTextColor(tpl.textHex);
+    setBlocks(tpl.blocks);
+  };
+
+  const handlePublish = async () => {
+    if (!storeName || !storeSlug) return;
+    setIsPublishing(true);
+    const themeConfig = JSON.stringify({ bgColor, btnColor, textColor, blocks });
+    
+    const res = await publishVibe({
+      name: storeName,
+      slug: storeSlug,
+      layoutMode: selectedId as any,
+      themeConfig
+    });
+
+    setIsPublishing(false);
+    if (res.error) {
+      alert(res.error);
+    } else {
+      setShowPublishModal(false);
+      router.push("/dashboard");
+    }
   };
 
   const addBlock = (type: string) => {
@@ -96,55 +116,55 @@ export default function VibeBuilderPage() {
   /* ── Shared live-preview content ── */
   const PreviewContent = ({ scale = 1 }: { scale?: number }) => (
     <div className="flex flex-col items-center w-full" style={{ padding: `${28 * scale}px ${16 * scale}px`, gap: `${6 * scale}px` }}>
-      {/* Avatar */}
-      <div
-        className="rounded-full flex items-center justify-center overflow-hidden border-4 border-white/40 shadow-lg mb-1"
-        style={{
-          width: 56 * scale, height: 56 * scale,
-          backgroundColor: btnColor + "33",
-        }}
-      >
-        <Image src="/logo.png" alt="" width={36 * scale} height={36 * scale} className="rounded-full" />
-      </div>
-
-      {/* Blocks */}
       {blocks.map(block => {
-        if (block.type === "header") return (
-          <p
-            key={block.id}
-            className="font-bold text-center"
-            style={{ color: textColor, fontSize: 13 * scale, marginBottom: 4 * scale }}
-          >
+        if (block.type === "header" || block.type === "headline") return (
+          <p key={block.id} className="font-bold text-center" style={{ color: textColor, fontSize: (block.type === "headline" ? 20 : 13) * scale, marginBottom: 4 * scale }}>
             {block.text}
           </p>
         );
-        if (block.type === "link") return (
-          <div
-            key={block.id}
-            className="w-full font-semibold text-center rounded-xl cursor-pointer transition-transform hover:scale-[1.02]"
-            style={{
-              backgroundColor: btnColor,
-              color: "white",
-              fontSize: 12 * scale,
-              padding: `${10 * scale}px ${14 * scale}px`,
-              borderRadius: 12 * scale,
-            }}
-          >
+        if (block.type === "bio" || block.type === "countdown" || block.type === "scarcity") return (
+           <p key={block.id} className="text-center" style={{ color: textColor, fontSize: 11 * scale, fontWeight: block.type === "scarcity" ? "bold" : "normal", marginBottom: 4 * scale }}>{block.text}</p>
+        );
+        if (block.type === "link" || block.type === "cta") return (
+          <div key={block.id} className="w-full font-semibold text-center rounded-xl cursor-pointer transition-transform hover:scale-[1.02]"
+            style={{ backgroundColor: btnColor, color: "white", fontSize: 12 * scale, padding: `${10 * scale}px ${14 * scale}px`, borderRadius: 12 * scale }}>
             {block.text}
           </div>
         );
         if (block.type === "video") return (
-          <div key={block.id} className="w-full relative flex items-center justify-center overflow-hidden"
-            style={{ aspectRatio: "16/9", backgroundColor: "#00000018", borderRadius: 10 * scale, marginBottom: 4 * scale }}>
+          <div key={block.id} className="w-full relative flex items-center justify-center overflow-hidden" style={{ aspectRatio: "16/9", backgroundColor: "#00000018", borderRadius: 10 * scale, marginBottom: 4 * scale }}>
             <PlayIcon style={{ width: 24 * scale, height: 24 * scale }} className="text-white/60" />
           </div>
         );
-        if (block.type === "gallery") return (
+        if (block.type === "gallery" || block.type === "product-grid" || block.type === "portfolio") return (
           <div key={block.id} className="w-full grid grid-cols-2" style={{ gap: 6 * scale, marginBottom: 4 * scale }}>
-            <div style={{ aspectRatio: "1", backgroundColor: "#00000009", borderRadius: 8 * scale }} />
-            <div style={{ aspectRatio: "1", backgroundColor: "#00000009", borderRadius: 8 * scale }} />
+            <div style={{ aspectRatio: "1", backgroundColor: "#00000009", borderRadius: 8 * scale, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{fontSize: 8*scale, color: textColor}}>Image</span></div>
+            <div style={{ aspectRatio: "1", backgroundColor: "#00000009", borderRadius: 8 * scale, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={{fontSize: 8*scale, color: textColor}}>Image</span></div>
           </div>
         );
+        if (block.type === "avatar" || block.type === "profile") return (
+          <div key={block.id} className="rounded-full flex items-center justify-center overflow-hidden shadow-lg mb-1" style={{ width: 56 * scale, height: 56 * scale, backgroundColor: btnColor + "33" }}>
+            <Image src="/logo.png" alt="" width={36 * scale} height={36 * scale} className="rounded-full" />
+          </div>
+        );
+        if (block.type === "categories" || block.type === "pricing" || block.type === "testimonials") return (
+          <div key={block.id} className="w-full p-2 rounded-lg text-center" style={{ border: `1px solid ${btnColor}40`, color: textColor, fontSize: 10 * scale }}>
+            {block.text} Placeholder
+          </div>
+        )
+        if (block.type === "product-flash") return (
+          <div key={block.id} className="w-full p-3 rounded-xl text-center shadow-md" style={{ background: btnColor, color: "white" }}>
+            <p style={{fontSize: 14*scale, fontWeight: "bold"}}>Flash Product</p>
+            <p style={{fontSize: 10*scale, textDecoration: "line-through"}}>Rp 100.000</p>
+            <p style={{fontSize: 16*scale, fontWeight: "bold"}}>Rp 49.000</p>
+            <button className="mt-2 px-3 py-1 bg-white text-black rounded-lg" style={{fontSize: 10*scale, fontWeight: "bold"}}>Beli Sekarang</button>
+          </div>
+        );
+        if (block.type === "hero") return (
+           <div key={block.id} className="w-full rounded-xl flex items-center justify-center font-bold" style={{aspectRatio: "2/1", background: `linear-gradient(45deg, ${btnColor}, ${btnColor}88)`, color: "white", fontSize: 16*scale}}>
+             {block.text}
+           </div>
+        )
         return null;
       })}
     </div>
@@ -184,7 +204,7 @@ export default function VibeBuilderPage() {
             className="flex p-1 rounded-xl"
             style={{ background: "var(--gray-100)" }}
           >
-            {(["templates", "custom"] as const).map(tab => (
+            {(["layouts", "custom"] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -203,7 +223,7 @@ export default function VibeBuilderPage() {
                   cursor: "pointer",
                 }}
               >
-                {tab === "templates" ? "Templates" : "Build from Scratch"}
+                {tab === "layouts" ? "Layouts" : "Build from Scratch"}
               </button>
             ))}
           </div>
@@ -211,16 +231,16 @@ export default function VibeBuilderPage() {
 
         {/* Body */}
         <div className="flex-1 overflow-y-auto scrollbar-hide" style={{ padding: "20px 24px" }}>
-          {activeTab === "templates" ? (
+          {activeTab === "layouts" ? (
             <div>
               <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", color: "var(--gray-400)", marginBottom: 14, textTransform: "uppercase" }}>
-                Pilih gaya bawaan
+                Pilih Layout Template
               </p>
               <div className="grid grid-cols-2" style={{ gap: 12 }}>
-                {TEMPLATES.map(tpl => (
+                {LAYOUT_TEMPLATES.map(tpl => (
                   <button
                     key={tpl.id}
-                    onClick={() => selectTemplate(tpl)}
+                    onClick={() => selectLayout(tpl)}
                     className="relative overflow-hidden cursor-pointer text-left"
                     style={{
                       borderRadius: 14,
@@ -370,6 +390,7 @@ export default function VibeBuilderPage() {
         {/* Footer CTA */}
         <div style={{ padding: "16px 24px", borderTop: "1px solid var(--gray-150)", background: "var(--gray-0)" }}>
           <button
+            onClick={() => setShowPublishModal(true)}
             className="btn-brand w-full justify-center"
             style={{ fontSize: 14, padding: "13px 24px", borderRadius: 14 }}
           >
@@ -377,6 +398,31 @@ export default function VibeBuilderPage() {
             Simpan & Publish Vibe
             <ArrowRightIcon className="w-4 h-4 ml-auto transition-transform group-hover:translate-x-1" />
           </button>
+
+      {showPublishModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white p-6 rounded-2xl w-full max-w-sm">
+            <h2 className="text-lg font-bold mb-4">Publish Vibe</h2>
+            <div className="mb-4">
+              <label className="block text-xs font-semibold text-gray-500 mb-1">Nama Bisnis</label>
+              <input value={storeName} onChange={e => setStoreName(e.target.value)} className="w-full border rounded-lg p-2 text-sm" placeholder="Contoh: Kopi Kenangan" />
+            </div>
+            <div className="mb-6">
+              <label className="block text-xs font-semibold text-gray-500 mb-1">URL Vibe</label>
+              <div className="flex items-center border rounded-lg px-2">
+                <span className="text-gray-400 text-sm">shopyvibe.id/</span>
+                <input value={storeSlug} onChange={e => setStoreSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))} className="w-full p-2 outline-none text-sm" placeholder="kopi-kenangan" />
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <button onClick={() => setShowPublishModal(false)} className="flex-1 py-2 rounded-lg border text-sm font-semibold text-black">Batal</button>
+              <button onClick={handlePublish} disabled={isPublishing || !storeName || !storeSlug} className="flex-1 py-2 rounded-lg text-white text-sm font-semibold disabled:opacity-50" style={{ background: "var(--brand-500)" }}>
+                {isPublishing ? "Menyimpan..." : "Publish"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
         </div>
       </aside>
 
