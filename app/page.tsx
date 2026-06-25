@@ -10,14 +10,17 @@ export default function ShopyVibeLandingPage() {
       <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex-shrink-0 flex items-center gap-2">
-              <Image src="/logo.png" alt="ShopyVibe Logo" width={32} height={32} className="rounded-lg" />
-              <span className="font-bold text-2xl tracking-tight text-slate-900">ShopyVibe</span>
+            <div className="flex-shrink-0 flex items-center gap-1.5 sm:gap-2">
+              <Image src="/logo.png" alt="ShopyVibe Logo" width={32} height={32} className="rounded-lg w-7 h-7 sm:w-8 sm:h-8" />
+              <span className="font-bold text-xl sm:text-2xl tracking-tight text-slate-900">ShopyVibe</span>
             </div>
-            <div className="flex items-center gap-3 sm:gap-4">
-              <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap">Log in</Link>
-              <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-4 sm:px-6 shadow-md shadow-indigo-200 text-sm">
-                <Link href="/dashboard">Get Started Free</Link>
+            <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+              <Link href="/login" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors whitespace-nowrap shrink-0">Log in</Link>
+              <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-full px-4 sm:px-6 shadow-md shadow-indigo-200 text-xs sm:text-sm whitespace-nowrap shrink-0">
+                <Link href="/dashboard">
+                  <span className="hidden sm:inline">Get Started Free</span>
+                  <span className="sm:hidden">Get Started</span>
+                </Link>
               </Button>
             </div>
           </div>

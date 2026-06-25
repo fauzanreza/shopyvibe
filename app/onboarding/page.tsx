@@ -155,9 +155,8 @@ export default function VibeBuilderPage() {
 
       {/* ────── LEFT PANEL ────── */}
       <aside
-        className="flex flex-col h-full flex-shrink-0 overflow-hidden"
+        className="flex flex-col h-full flex-shrink-0 overflow-hidden w-full lg:w-[400px]"
         style={{
-          width: 400,
           background: "var(--gray-0)",
           borderRight: "1px solid var(--gray-150)",
           boxShadow: "4px 0 24px -4px rgb(0 0 0 / 0.06)",
