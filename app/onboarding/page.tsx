@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { publishVibe } from "@/actions/store";
+import { LayoutMode } from "@prisma/client";
 import {
   ArrowRightIcon, SparklesIcon, PaintBrushIcon,
   PlusIcon, CheckIcon, Bars3BottomLeftIcon, PhotoIcon,
@@ -93,7 +94,7 @@ export default function VibeBuilderPage() {
     const res = await publishVibe({
       name: storeName,
       slug: storeSlug,
-      layoutMode: selectedId as any,
+      layoutMode: selectedId as LayoutMode,
       themeConfig
     });
 
